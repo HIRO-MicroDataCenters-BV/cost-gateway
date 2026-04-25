@@ -16,7 +16,7 @@ class ContextBuilderTest(TestCase):
             msg,
             (
                 "usage: pytest [-h] --config CONFIG\n\n"
-                "Cost Gateway.\n\n"
+                "Cost Gateway collects all sorts of costs and exposes them via prometheus\n\n"
                 + "options:\n"
                 + "  -h, --help       show this help message and exit\n"
                 + "  --config CONFIG  Cost Gateway Configuration\n"

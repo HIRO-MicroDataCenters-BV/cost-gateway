@@ -19,10 +19,6 @@ class ContextTest(AsyncTestFixture):
         self.settings = self.make_settings()
         self.context = Context(
             self.clock,
-            self.app_client,
-            self.decision_store,
-            self.zone_api_client,
-            self.k8s_client,
             self.settings,
             self.loop,
         )
@@ -32,7 +28,6 @@ class ContextTest(AsyncTestFixture):
 
     def test_end_to_end_minimal(self) -> None:
         self.context.start()
-        self.wait_for_condition(2, lambda: self.context.resource_tracking.is_subscription_active())
         self.context.stop()
 
     def make_settings(self) -> Settings:
