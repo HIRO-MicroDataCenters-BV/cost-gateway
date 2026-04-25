@@ -1,5 +1,5 @@
-FROM python:3.15-slim AS builder
-COPY --from=ghcr.io/astral-sh/uv:0.5.7 /uv /bin/uv
+FROM python:3.14.4-slim-trixie AS builder
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /bin/uv
 
 ENV \
     # do not buffer python output at all
@@ -18,7 +18,7 @@ RUN uv sync \
         --no-editable \
         --no-dev
 
-FROM python:3.15-slim AS runtime
+FROM python:3.14.4-slim-trixie AS runtime
 
 ENV PATH="/app/.venv/bin:$PATH"
 
