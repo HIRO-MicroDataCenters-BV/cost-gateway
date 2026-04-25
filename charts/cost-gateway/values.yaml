@@ -1,0 +1,68 @@
+replicaCount: 1
+
+image:
+  repository: ""
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+serviceMonitorEnabled: true
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+resources:
+  requests:
+    cpu: 300m
+    memory: 300Mi
+  limits:
+    cpu: 300m
+    memory: 300Mi
+
+
+service:
+  type: ClusterIP
+
+  metrics:
+    port: 8080
+
+livenessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+
+# Cost Gateway settings
+settings:
+
+  # Prometheus metric exposure configuration
+  prometheus:
+
+    # -- KG exporter '/metrics' API port
+    endpoint_port: 8080

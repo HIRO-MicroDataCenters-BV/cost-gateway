@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: "ghcr.io/hiro-microdatacenters-bv/cost-gateway-dev"
+  tag: "test1"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: ghcr-secret
+
+service:
+  type: LoadBalancer
+  port: 8000
+
+# Cost Gateway
+settings:
+
