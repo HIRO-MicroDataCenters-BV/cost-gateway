@@ -21,3 +21,5 @@ class CostSettings(BaseSettings):
 class Settings(BaseSettings):
     prometheus: PrometheusSettings
     cost: CostSettings = CostSettings()
+
+    model_config = {"extra": "allow"}

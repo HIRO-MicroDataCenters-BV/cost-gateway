@@ -7,7 +7,7 @@ from cost_gateway.settings import CostSettings, CostSimulatorConfig
 
 
 class CostServiceTest(AsyncTestFixture):
-    mock_source: CostSimulator
+    mock_source: MagicMock
     settings: CostSettings
     service: CostService
 
@@ -31,7 +31,7 @@ class CostServiceTest(AsyncTestFixture):
     async def test_update_metrics_disabled(self) -> None:
         self.settings.enabled = False
         await self.service.update_metrics()
-        self.mock_source.get_cost.assert_not_called()
+        assert not self.mock_source.get_cost.called
 
     async def test_update_metrics_multiple_sources(self) -> None:
         self.settings.sources["cloud"] = CostSimulatorConfig(
