@@ -5,8 +5,8 @@ import asyncio
 from loguru import logger
 from prometheus_async.aio.web import start_http_server
 
-from cost_gateway.cost.simulator import CostSimulator
 from cost_gateway.cost.service import CostService
+from cost_gateway.cost.simulator import CostSimulator
 from cost_gateway.settings import Settings
 from cost_gateway.util.clock import Clock
 
