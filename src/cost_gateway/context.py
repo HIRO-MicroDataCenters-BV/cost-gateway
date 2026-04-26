@@ -5,6 +5,8 @@ import asyncio
 from loguru import logger
 from prometheus_async.aio.web import start_http_server
 
+from cost_gateway.cost.service import CostService
+from cost_gateway.cost.simulator import CostSimulator
 from cost_gateway.settings import Settings
 from cost_gateway.util.clock import Clock
 
@@ -14,6 +16,7 @@ class Context:
     terminated: asyncio.Event
     tasks: List[asyncio.Task[Any]]
     settings: Settings
+    clock: Clock
 
     def __init__(
         self,
@@ -25,6 +28,7 @@ class Context:
         self.terminated = asyncio.Event()
         self.loop = loop
         self.tasks = []
+        self.clock = clock
 
     def start(self) -> None:
         if self.terminated.is_set():
@@ -33,6 +37,20 @@ class Context:
         self.loop.run_until_complete(self.run_tasks())
 
     async def run_tasks(self) -> None:
+        if self.settings.cost.enabled:
+
+            simulator = CostSimulator(self.clock)
+            for name, config in self.settings.cost.sources.items():
+                simulator.add_cost(
+                    name=name,
+                    min_cost=config.min_cost,
+                    max_cost=config.max_cost,
+                    peak_time=config.peak_time,
+                    period=config.period,
+                )
+            cost_service = CostService(simulator, self.settings.cost)
+            task = self.loop.create_task(cost_service.run_periodic_update())
+            self.tasks.append(task)
         self.prometheus_server = await start_http_server(port=self.settings.prometheus.endpoint_port)
 
     def stop(self) -> None:

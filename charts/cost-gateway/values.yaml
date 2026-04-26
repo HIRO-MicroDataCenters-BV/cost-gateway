@@ -1,29 +1,47 @@
+# Cost Gateway Helm Chart Values
+# Reference: https://github.com/hiro-microdatacenters-bv/cost-gateway
+
+# Number of replicas
 replicaCount: 1
 
+# Container image settings
 image:
   repository: ""
   tag: ""
   pullPolicy: IfNotPresent
 
+# Image pull secrets
 imagePullSecrets: []
+
+# Override name
 nameOverride: ""
+
+# Override fullname
 fullnameOverride: ""
 
+# Service account configuration
 serviceAccount:
   create: true
   automount: true
   annotations: {}
   name: ""
 
+# Enable ServiceMonitor for Prometheus Operator
 serviceMonitorEnabled: true
 
+# Pod annotations
 podAnnotations: {}
+
+# Pod labels
 podLabels: {}
 
+# Pod security context
 podSecurityContext: {}
 
+# Container security context
 securityContext: {}
 
+# Resource requests and limits
 resources:
   requests:
     cpu: 300m
@@ -32,13 +50,15 @@ resources:
     cpu: 300m
     memory: 300Mi
 
-
+# Service configuration
 service:
   type: ClusterIP
 
+  # Metrics server port
   metrics:
     port: 8080
 
+# Liveness probe configuration
 livenessProbe:
   failureThreshold: 3
   httpGet:
@@ -49,6 +69,7 @@ livenessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
 
+# Readiness probe configuration
 readinessProbe:
   httpGet:
     path: /
@@ -58,7 +79,7 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
 
-# Cost Gateway settings
+# Cost Gateway application settings
 settings:
 
   # Prometheus metric exposure configuration
@@ -66,3 +87,33 @@ settings:
 
     # -- KG exporter '/metrics' API port
     endpoint_port: 8080
+
+  # Cost monitoring configuration
+  cost:
+
+    # -- Enable cost monitoring to expose costs to Prometheus
+    enabled: true
+
+    # -- Cost sources to monitor with sinusoidal simulation
+    sources:
+      # Energy cost simulator
+      energy:
+        # Minimum energy cost
+        min_cost: 0.1
+        # Maximum energy cost
+        max_cost: 0.5
+        # Unix timestamp when cost peaks (12:00 UTC)
+        peak_time: 43200
+        # Cost cycle period in seconds (default: 86400 = 24 hours)
+        period: 86400
+
+      # Cloud cost simulator
+      cloud:
+        # Minimum cloud cost
+        min_cost: 100.0
+        # Maximum cloud cost
+        max_cost: 500.0
+        # Unix timestamp when cost peaks (06:00 UTC)
+        peak_time: 21600
+        # Cost cycle period in seconds (default: 86400 = 24 hours)
+        period: 86400
