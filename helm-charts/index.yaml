@@ -11,4 +11,14 @@ entries:
     urls:
     - https://HIRO-MicroDataCenters-BV.github.io/cost-gateway/helm-charts/cost-gateway-0.1.0-dev.0.main.dda699f9.tgz
     version: 0.1.0-dev.0.main.dda699f9
-generated: "2026-04-25T12:05:49.730330596Z"
+  - apiVersion: v2
+    appVersion: 0.1.0-dev.0.cost-feature.f8622934
+    created: "2026-04-26T10:44:33.784663674Z"
+    description: Collects all types of costs and exposes them via prometheus
+    digest: c132df22f649f3a301089c63174d99e7e5d2921833740699f7cac0b2b94473e6
+    name: cost-gateway
+    type: application
+    urls:
+    - https://HIRO-MicroDataCenters-BV.github.io/cost-gateway/helm-charts/cost-gateway-0.1.0-dev.0.cost-feature.f8622934.tgz
+    version: 0.1.0-dev.0.cost-feature.f8622934
+generated: "2026-04-26T10:44:33.783851321Z"
