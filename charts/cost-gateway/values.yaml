@@ -70,22 +70,29 @@ settings:
   # Cost monitoring configuration
   cost:
 
-    # -- Enable cost monitoring
-    enabled: false
+    # -- Enable cost monitoring to expose costs to Prometheus
+    enabled: true
 
-    # -- Cost sources to monitor
-    sources: {}
+    # -- Cost sources to monitor with sinusoidal simulation
+    sources:
+      # Energy cost simulator
+      energy:
+        # Minimum energy cost
+        min_cost: 0.1
+        # Maximum energy cost
+        max_cost: 0.5
+        # Unix timestamp when cost peaks (12:00 UTC)
+        peak_time: 43200
+        # Cost cycle period in seconds (default: 86400 = 24 hours)
+        period: 86400
 
-    # Example cost sources (uncomment and configure for production use)
-    #
-    # sources:
-    #   energy:
-    #     min_cost: 0.1
-    #     max_cost: 0.5
-    #     peak_time: 43200
-    #     period: 86400
-    #   cloud:
-    #     min_cost: 100.0
-    #     max_cost: 500.0
-    #     peak_time: 21600
-    #     period: 86400
+      # Cloud cost simulator
+      cloud:
+        # Minimum cloud cost
+        min_cost: 100.0
+        # Maximum cloud cost
+        max_cost: 500.0
+        # Unix timestamp when cost peaks (06:00 UTC)
+        peak_time: 21600
+        # Cost cycle period in seconds (default: 86400 = 24 hours)
+        period: 86400
