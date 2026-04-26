@@ -10,7 +10,7 @@ repos:
     - id: helm-docs
       args:
         # Make the tool search for charts only under the `charts` directory
-        - --chart-search-root=./charts
+        - --chart-search-root=charts
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0
@@ -19,7 +19,7 @@ repos:
     exclude: ./charts
   - id: check-added-large-files
 
-- repo: https://github.com/koalaman/shellcheck-precommit
+- repo: https://koalaman.sh/pre-commit
   rev: v0.11.0
   hooks:
   - id: shellcheck
