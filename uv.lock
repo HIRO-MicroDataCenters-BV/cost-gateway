@@ -179,6 +179,7 @@ dependencies = [
     { name = "loguru" },
     { name = "prometheus-async" },
     { name = "pydantic-settings" },
+    { name = "pyyaml" },
     { name = "uvicorn" },
 ]
 
@@ -204,6 +205,7 @@ requires-dist = [
     { name = "loguru", specifier = "==0.7.3" },
     { name = "prometheus-async", specifier = "==26.1.0" },
     { name = "pydantic-settings", specifier = "==2.14.0" },
+    { name = "pyyaml", specifier = "==6.0.3" },
     { name = "uvicorn", specifier = "==0.46.0" },
 ]
 
