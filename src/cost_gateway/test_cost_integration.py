@@ -1,6 +1,7 @@
 from cost_gateway.async_fixture import AsyncTestFixture
 from cost_gateway.context import Context
 from cost_gateway.settings import (
+    ApiSettings,
     CostSettings,
     CostSimulatorConfig,
     PrometheusSettings,
@@ -30,6 +31,7 @@ class CostIntegrationTest(AsyncTestFixture):
     def make_settings(self) -> Settings:
         settings = Settings(
             prometheus=PrometheusSettings(endpoint_port=8080),
+            api=ApiSettings(port=8000),
             cost=CostSettings(
                 enabled=True,
                 sources={

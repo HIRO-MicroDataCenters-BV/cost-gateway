@@ -1,5 +1,7 @@
 prometheus:
   endpoint_port: 8085
+api:
+  port: 8000
 cost:
   enabled: true
   sources:

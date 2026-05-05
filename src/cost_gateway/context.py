@@ -5,6 +5,7 @@ import asyncio
 from loguru import logger
 from prometheus_async.aio.web import start_http_server
 
+from cost_gateway.api.app import start_fastapi
 from cost_gateway.cost.service import CostService
 from cost_gateway.cost.simulator import CostSimulator
 from cost_gateway.settings import Settings
@@ -17,6 +18,7 @@ class Context:
     tasks: List[asyncio.Task[Any]]
     settings: Settings
     clock: Clock
+    cost_service: CostService
 
     def __init__(
         self,
@@ -29,6 +31,16 @@ class Context:
         self.loop = loop
         self.tasks = []
         self.clock = clock
+        simulator = CostSimulator(self.clock)
+        for name, config in self.settings.cost.sources.items():
+            simulator.add_cost(
+                name=name,
+                min_cost=config.min_cost,
+                max_cost=config.max_cost,
+                peak_time=config.peak_time,
+                period=config.period,
+            )
+        self.cost_service = CostService(simulator, self.settings.cost)
 
     def start(self) -> None:
         if self.terminated.is_set():
@@ -38,19 +50,10 @@ class Context:
 
     async def run_tasks(self) -> None:
         if self.settings.cost.enabled:
-
-            simulator = CostSimulator(self.clock)
-            for name, config in self.settings.cost.sources.items():
-                simulator.add_cost(
-                    name=name,
-                    min_cost=config.min_cost,
-                    max_cost=config.max_cost,
-                    peak_time=config.peak_time,
-                    period=config.period,
-                )
-            cost_service = CostService(simulator, self.settings.cost)
-            task = self.loop.create_task(cost_service.run_periodic_update())
+            task = self.loop.create_task(self.cost_service.run_periodic_update())
             self.tasks.append(task)
+        self.tasks.append(self.loop.create_task(start_fastapi(self.settings.api.port, self.cost_service)))
+
         self.prometheus_server = await start_http_server(port=self.settings.prometheus.endpoint_port)
 
     def stop(self) -> None:

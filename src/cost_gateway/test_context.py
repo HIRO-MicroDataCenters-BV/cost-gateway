@@ -1,6 +1,7 @@
 from cost_gateway.async_fixture import AsyncTestFixture
 from cost_gateway.context import Context
 from cost_gateway.settings import (
+    ApiSettings,
     PrometheusSettings,
     Settings,
 )
@@ -31,7 +32,5 @@ class ContextTest(AsyncTestFixture):
         self.context.stop()
 
     def make_settings(self) -> Settings:
-        settings = Settings(
-            prometheus=PrometheusSettings(endpoint_port=8080),
-        )
+        settings = Settings(prometheus=PrometheusSettings(endpoint_port=8080), api=ApiSettings(port=8000))
         return settings
