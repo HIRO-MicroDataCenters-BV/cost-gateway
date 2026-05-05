@@ -18,8 +18,13 @@ class CostSettings(BaseSettings):
     sources: dict[str, CostSimulatorConfig] = {}
 
 
+class ApiSettings(BaseSettings):
+    port: int = 8000
+
+
 class Settings(BaseSettings):
     prometheus: PrometheusSettings
+    api: ApiSettings
     cost: CostSettings = CostSettings()
 
     model_config = {"extra": "allow"}
