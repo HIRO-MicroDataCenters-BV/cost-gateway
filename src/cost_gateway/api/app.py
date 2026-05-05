@@ -58,7 +58,7 @@ def create_api() -> CostGatewayAPI:
 
     @app.get(path="/costs/", response_model=List[CostModel], operation_id="list_costs")
     async def list_costs(cost_service: CostService = Depends(lambda: get_cost_service(app))) -> List[CostModel]:
-        list_of_costs = cost_service.list()
+        list_of_costs = await cost_service.list()
         return [CostModel.from_object(cost) for cost in list_of_costs]
 
     @app.put("/costs/{name}/customize/{value}", response_model=List[CostModel], operation_id="set_custom_cost")
@@ -66,7 +66,15 @@ def create_api() -> CostGatewayAPI:
         name: str, value: Decimal, cost_service: CostService = Depends(lambda: get_cost_service(app))
     ) -> List[CostModel]:
         cost_service.set_custom_cost(name, value)
-        list_of_costs = cost_service.list()
+        list_of_costs = await cost_service.list()
+        return [CostModel.from_object(cost) for cost in list_of_costs]
+
+    @app.put("/costs/{name}/uncustomize", response_model=List[CostModel], operation_id="remove_custom_cost")
+    async def remove_custom_cost(
+        name: str, cost_service: CostService = Depends(lambda: get_cost_service(app))
+    ) -> List[CostModel]:
+        await cost_service.remove_custom_cost(name)
+        list_of_costs = await cost_service.list()
         return [CostModel.from_object(cost) for cost in list_of_costs]
 
     return app

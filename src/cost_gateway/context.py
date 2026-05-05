@@ -50,7 +50,7 @@ class Context:
 
     async def run_tasks(self) -> None:
         if self.settings.cost.enabled:
-            task = self.loop.create_task(self.cost_service.run_periodic_update())
+            task = self.loop.create_task(self.cost_service.run_periodic_update(1))
             self.tasks.append(task)
         self.tasks.append(self.loop.create_task(start_fastapi(self.settings.api.port, self.cost_service)))
 
