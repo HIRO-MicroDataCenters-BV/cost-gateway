@@ -23,6 +23,7 @@ FROM python:3.14.4-slim-trixie AS runtime
 ENV PATH="/app/.venv/bin:$PATH"
 
 COPY --from=builder /app/.venv /app/.venv
+COPY --from=builder /root/.local/share/uv/python /root/.local/share/uv/python
 
 WORKDIR /app
 
