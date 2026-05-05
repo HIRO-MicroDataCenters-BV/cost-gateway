@@ -61,7 +61,7 @@ def create_api() -> CostGatewayAPI:
         list_of_costs = cost_service.list()
         return [CostModel.from_object(cost) for cost in list_of_costs]
 
-    @app.put("/costs/{name}/customize", response_model=List[CostModel], operation_id="set_custom_cost")
+    @app.put("/costs/{name}/customize/{value}", response_model=List[CostModel], operation_id="set_custom_cost")
     async def set_custom_cost(
         name: str, value: Decimal, cost_service: CostService = Depends(lambda: get_cost_service(app))
     ) -> List[CostModel]:

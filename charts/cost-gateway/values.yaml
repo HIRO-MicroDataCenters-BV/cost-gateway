@@ -58,6 +58,11 @@ service:
   metrics:
     port: 8080
 
+  api:
+    port: 8085
+
+ingressHostName: cost-gateway
+
 # Liveness probe configuration
 livenessProbe:
   failureThreshold: 3
