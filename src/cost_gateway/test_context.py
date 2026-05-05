@@ -32,5 +32,5 @@ class ContextTest(AsyncTestFixture):
         self.context.stop()
 
     def make_settings(self) -> Settings:
-        settings = Settings(prometheus=PrometheusSettings(endpoint_port=8080), api=ApiSettings(port=8000))
+        settings = Settings(prometheus=PrometheusSettings(endpoint_port=8080), api=ApiSettings(port=8085))
         return settings

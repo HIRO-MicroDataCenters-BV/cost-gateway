@@ -30,8 +30,8 @@ class CostIntegrationTest(AsyncTestFixture):
 
     def make_settings(self) -> Settings:
         settings = Settings(
-            prometheus=PrometheusSettings(endpoint_port=8080),
-            api=ApiSettings(port=8000),
+            prometheus=PrometheusSettings(endpoint_port=8081),
+            api=ApiSettings(port=8086),
             cost=CostSettings(
                 enabled=True,
                 sources={
