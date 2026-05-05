@@ -12,6 +12,7 @@ WORKDIR /app
 
 COPY . .
 
+RUN uv python install 3.14.4
 RUN uv sync \
         --frozen \
         --compile-bytecode \
