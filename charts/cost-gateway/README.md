@@ -45,6 +45,7 @@ Collects all types of costs and exposes them via prometheus
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
 | serviceMonitorEnabled | bool | `true` |  |
+| settings.api.port | int | `8085` |  |
 | settings.cost.enabled | bool | `true` | Enable cost monitoring to expose costs to Prometheus |
 | settings.cost.sources | object | `{"cloud":{"max_cost":500,"min_cost":100,"peak_time":21600,"period":86400},"energy":{"max_cost":0.5,"min_cost":0.1,"peak_time":43200,"period":86400}}` | Cost sources to monitor with sinusoidal simulation |
 | settings.prometheus.endpoint_port | int | `8080` | KG exporter '/metrics' API port |

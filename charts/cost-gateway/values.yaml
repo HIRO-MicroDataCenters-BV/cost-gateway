@@ -93,6 +93,11 @@ settings:
     # -- KG exporter '/metrics' API port
     endpoint_port: 8080
 
+  # Cost Gateway Service API
+  api:
+    # Api port
+    port: 8085
+
   # Cost monitoring configuration
   cost:
 
