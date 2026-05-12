@@ -1,9 +1,11 @@
+from cost_gateway.cost.cloud_strategy import CloudCostStrategy
 from cost_gateway.cost.cost_strategy import (
     ConstantCostStrategy,
     CostStrategy,
     LinearCostStrategy,
     SinusoidalCostStrategy,
 )
+from cost_gateway.cost.solar_strategy import SolarEnergyCostStrategy
 from cost_gateway.cost.source import CostSource
 from cost_gateway.settings import CostSourceConfig, StrategyType
 from cost_gateway.util.clock import Clock
@@ -35,6 +37,10 @@ class CostSimulator(CostSource):
                 return ConstantCostStrategy(value=config.value)
             case StrategyType.linear:
                 return LinearCostStrategy(peak_time=config.peak_time, period=config.period)
+            case StrategyType.cloud:
+                return CloudCostStrategy()
+            case StrategyType.solar_energy:
+                return SolarEnergyCostStrategy()
 
     def get_cost(self, name: str) -> float:
         entry = self.strategies.get(name)

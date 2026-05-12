@@ -14,6 +14,8 @@ class StrategyType(str, Enum):
     sinusoidal = "sinusoidal"
     constant = "constant"
     linear = "linear"
+    cloud = "cloud"
+    solar_energy = "solar_energy"
 
 
 class CostSourceConfig(BaseModel):
