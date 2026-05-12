@@ -23,8 +23,6 @@ class CostSettingsTest(AsyncTestFixture):
         self.assertEqual(config.max_cost, 1.0)
         self.assertEqual(config.peak_time, 0)
         self.assertEqual(config.period, 86400)
-        self.assertIsNone(config.value)
-        self.assertIsNone(config.seed)
 
     def test_cost_source_config_with_values(self) -> None:
         config = CostSourceConfig(

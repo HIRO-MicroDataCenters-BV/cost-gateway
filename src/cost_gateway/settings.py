@@ -14,7 +14,6 @@ class StrategyType(str, Enum):
     sinusoidal = "sinusoidal"
     constant = "constant"
     linear = "linear"
-    random = "random"
 
 
 class CostSourceConfig(BaseModel):
@@ -24,7 +23,6 @@ class CostSourceConfig(BaseModel):
     value: float | None = None
     peak_time: int = 0
     period: int = 86400
-    seed: int | None = None
 
     @field_validator("min_cost", "max_cost")
     @classmethod

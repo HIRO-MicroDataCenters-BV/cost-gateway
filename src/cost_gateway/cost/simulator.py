@@ -2,7 +2,6 @@ from cost_gateway.cost.cost_strategy import (
     ConstantCostStrategy,
     CostStrategy,
     LinearCostStrategy,
-    RandomCostStrategy,
     SinusoidalCostStrategy,
 )
 from cost_gateway.cost.source import CostSource
@@ -36,8 +35,6 @@ class CostSimulator(CostSource):
                 return ConstantCostStrategy(value=config.value)
             case StrategyType.linear:
                 return LinearCostStrategy(peak_time=config.peak_time, period=config.period)
-            case StrategyType.random:
-                return RandomCostStrategy(seed=config.seed)
 
     def get_cost(self, name: str) -> float:
         entry = self.strategies.get(name)

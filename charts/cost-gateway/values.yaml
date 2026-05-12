@@ -108,6 +108,8 @@ settings:
     sources:
       # Energy cost simulator
       energy:
+        # Simulation strategy
+        strategy: sinusoidal      
         # Minimum energy cost
         min_cost: 0.1
         # Maximum energy cost
@@ -119,6 +121,8 @@ settings:
 
       # Cloud cost simulator
       cloud:
+        # Simulation strategy
+        strategy: sinusoidal
         # Minimum cloud cost
         min_cost: 100.0
         # Maximum cloud cost

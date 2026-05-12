@@ -154,36 +154,3 @@ class CostSimulatorTest(AsyncTestFixture):
         self.assertAlmostEqual(self.simulator.get_cost("energy"), 0.5, places=3)
         self.clock.set_seconds(86400)
         self.assertAlmostEqual(self.simulator.get_cost("energy"), 0.0, places=3)
-
-    def test_random_strategy(self) -> None:
-        config = CostSourceConfig(
-            strategy=StrategyType.random,
-            min_cost=0.0,
-            max_cost=1.0,
-            seed=42,
-        )
-        self.simulator.add_cost("energy", config=config)
-
-        self.clock.set_seconds(0)
-        cost1 = self.simulator.get_cost("energy")
-        self.clock.set_seconds(100)
-        cost2 = self.simulator.get_cost("energy")
-        self.assertGreaterEqual(cost1, 0.0)
-        self.assertLessEqual(cost1, 1.0)
-        self.assertGreaterEqual(cost2, 0.0)
-        self.assertLessEqual(cost2, 1.0)
-
-    def test_random_strategy_deterministic_with_seed(self) -> None:
-        config = CostSourceConfig(
-            strategy=StrategyType.random,
-            min_cost=0.0,
-            max_cost=1.0,
-            seed=123,
-        )
-        self.simulator.add_cost("energy", config=config)
-
-        self.clock.set_seconds(0)
-        cost1 = self.simulator.get_cost("energy")
-        self.clock.set_seconds(0)
-        cost2 = self.simulator.get_cost("energy")
-        self.assertEqual(cost1, cost2)

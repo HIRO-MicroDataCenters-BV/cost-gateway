@@ -1,6 +1,5 @@
 import abc
 import math
-import random
 
 
 class CostStrategy(abc.ABC):
@@ -51,16 +50,3 @@ class LinearCostStrategy(CostStrategy):
             return min_cost + (max_cost - min_cost) * (normalized_time * 2)
         else:
             return max_cost - (max_cost - min_cost) * ((normalized_time - 0.5) * 2)
-
-
-class RandomCostStrategy(CostStrategy):
-    seed: int | None
-
-    def __init__(self, seed: int | None = None):
-        self.seed = seed
-
-    def compute_cost(self, min_cost: float, max_cost: float, now_seconds: int) -> float:
-        if self.seed is not None:
-            rng = random.Random(self.seed + now_seconds)
-            return rng.uniform(min_cost, max_cost)
-        return random.uniform(min_cost, max_cost)
