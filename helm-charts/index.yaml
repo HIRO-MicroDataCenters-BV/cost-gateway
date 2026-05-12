@@ -142,6 +142,16 @@ entries:
     - https://HIRO-MicroDataCenters-BV.github.io/cost-gateway/helm-charts/cost-gateway-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v2
+    appVersion: 0.0.2-dev.3.cost-feature.01ad7062
+    created: "2026-05-12T09:04:19.21174059Z"
+    description: Collects all types of costs and exposes them via prometheus
+    digest: 4a82e794b5561428552d568c754f0340da63c798d75641d0aae4de6b4622eb63
+    name: cost-gateway
+    type: application
+    urls:
+    - https://HIRO-MicroDataCenters-BV.github.io/cost-gateway/helm-charts/cost-gateway-0.0.2-dev.3.cost-feature.01ad7062.tgz
+    version: 0.0.2-dev.3.cost-feature.01ad7062
+  - apiVersion: v2
     appVersion: 0.0.2-dev.2.cost-feature.540b89a4
     created: "2026-05-12T08:54:56.746210299Z"
     description: Collects all types of costs and exposes them via prometheus
@@ -171,4 +181,4 @@ entries:
     urls:
     - https://HIRO-MicroDataCenters-BV.github.io/cost-gateway/helm-charts/cost-gateway-0.0.1-dev.2.main.98923c9a.tgz
     version: 0.0.1-dev.2.main.98923c9a
-generated: "2026-05-12T08:54:56.745595907Z"
+generated: "2026-05-12T09:04:19.21091532Z"
