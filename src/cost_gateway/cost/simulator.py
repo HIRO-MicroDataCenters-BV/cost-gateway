@@ -1,63 +1,52 @@
-import math
-
+from cost_gateway.cost.cloud_strategy import CloudCostStrategy
+from cost_gateway.cost.cost_strategy import (
+    ConstantCostStrategy,
+    CostStrategy,
+    LinearCostStrategy,
+    SinusoidalCostStrategy,
+)
+from cost_gateway.cost.solar_strategy import SolarEnergyCostStrategy
 from cost_gateway.cost.source import CostSource
+from cost_gateway.settings import CostSourceConfig, StrategyType
 from cost_gateway.util.clock import Clock
 
 
-class CostSimulatorConfig:
-    min_cost: float
-    max_cost: float
-    peak_time: int
-    period: int
-
-    def __init__(
-        self,
-        min_cost: float,
-        max_cost: float,
-        peak_time: int,
-        period: int = 86400,
-    ):
-        self.min_cost = min_cost
-        self.max_cost = max_cost
-        self.peak_time = peak_time
-        self.period = period
-
-
 class CostSimulator(CostSource):
-    config: CostSimulatorConfig
     clock: Clock
-    costs: dict[str, CostSimulatorConfig]
+    strategies: dict[str, tuple[CostStrategy, CostSourceConfig]]
 
     def __init__(self, clock: Clock):
         self.clock = clock
-        self.costs = {}
+        self.strategies = {}
 
     def add_cost(
         self,
         name: str,
-        min_cost: float,
-        max_cost: float,
-        peak_time: int,
-        period: int = 86400,
+        config: CostSourceConfig,
     ) -> None:
-        self.costs[name] = CostSimulatorConfig(
-            min_cost=min_cost,
-            max_cost=max_cost,
-            peak_time=peak_time,
-            period=period,
-        )
+        strategy = self._create_strategy(config)
+        self.strategies[name] = (strategy, config)
 
-    async def get_cost(self, name: str) -> float:
-        config = self.costs.get(name)
-        if config is None:
+    def _create_strategy(self, config: CostSourceConfig) -> CostStrategy:
+        match config.strategy:
+            case StrategyType.sinusoidal:
+                return SinusoidalCostStrategy(peak_time=config.peak_time, period=config.period)
+            case StrategyType.constant:
+                if config.value is None:
+                    config.value = config.min_cost
+                return ConstantCostStrategy(value=config.value)
+            case StrategyType.linear:
+                return LinearCostStrategy(peak_time=config.peak_time, period=config.period)
+            case StrategyType.cloud:
+                return CloudCostStrategy()
+            case StrategyType.solar_energy:
+                return SolarEnergyCostStrategy()
+
+    def get_cost(self, name: str) -> float:
+        entry = self.strategies.get(name)
+        if entry is None:
             raise ValueError(f"Cost source '{name}' not configured")
 
+        strategy, config = entry
         now_seconds = self.clock.now_seconds()
-        time_diff = now_seconds - config.peak_time
-        normalized_time = (time_diff % config.period) / config.period
-        angle = normalized_time * 2 * math.pi - math.pi
-
-        cos_value = math.cos(angle)
-        cost = config.min_cost + (config.max_cost - config.min_cost) * (1 + cos_value) / 2
-
-        return cost
+        return strategy.compute_cost(config.min_cost, config.max_cost, now_seconds)

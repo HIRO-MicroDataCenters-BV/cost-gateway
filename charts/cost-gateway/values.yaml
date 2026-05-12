@@ -106,24 +106,28 @@ settings:
 
     # -- Cost sources to monitor with sinusoidal simulation
     sources:
-      # Energy cost simulator
-      energy:
-        # Minimum energy cost
-        min_cost: 0.1
-        # Maximum energy cost
-        max_cost: 0.5
-        # Unix timestamp when cost peaks (12:00 UTC)
-        peak_time: 43200
-        # Cost cycle period in seconds (default: 86400 = 24 hours)
-        period: 86400
-
       # Cloud cost simulator
       cloud:
+        # Simulation strategy
+        strategy: cloud
         # Minimum cloud cost
         min_cost: 100.0
         # Maximum cloud cost
         max_cost: 500.0
         # Unix timestamp when cost peaks (06:00 UTC)
         peak_time: 21600
+        # Cost cycle period in seconds (default: 86400 = 24 hours)
+        period: 86400
+
+      # Solar energy cost simulator (handles negative prices)
+      energy:
+        # Simulation strategy
+        strategy: solar_energy
+        # Minimum solar energy cost (can be negative due to oversupply)
+        min_cost: -0.05
+        # Maximum solar energy cost
+        max_cost: 0.3
+        # Unix timestamp when cost peaks (12:00 UTC)
+        peak_time: 43200
         # Cost cycle period in seconds (default: 86400 = 24 hours)
         period: 86400
