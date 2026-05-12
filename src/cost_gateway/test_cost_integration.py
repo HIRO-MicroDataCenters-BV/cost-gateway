@@ -3,7 +3,7 @@ from cost_gateway.context import Context
 from cost_gateway.settings import (
     ApiSettings,
     CostSettings,
-    CostSimulatorConfig,
+    CostSourceConfig,
     PrometheusSettings,
     Settings,
 )
@@ -35,8 +35,8 @@ class CostIntegrationTest(AsyncTestFixture):
             cost=CostSettings(
                 enabled=True,
                 sources={
-                    "energy": CostSimulatorConfig(min_cost=0.1, max_cost=0.5, peak_time=0, period=86400),
-                    "cloud": CostSimulatorConfig(min_cost=100.0, max_cost=500.0, peak_time=43200, period=86400),
+                    "energy": CostSourceConfig(min_cost=0.1, max_cost=0.5, peak_time=0, period=86400),
+                    "cloud": CostSourceConfig(min_cost=100.0, max_cost=500.0, peak_time=43200, period=86400),
                 },
             ),
         )

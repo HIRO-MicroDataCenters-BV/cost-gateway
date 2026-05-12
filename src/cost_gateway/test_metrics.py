@@ -11,9 +11,9 @@ class CostMetricsTest(AsyncTestFixture):
 
     def test_register_metric_creates_new(self) -> None:
         gauge = get_or_create_gauge("energy", "Energy cost")
-        assert gauge is not None
+        self.assertIsNotNone(gauge)
 
     def test_register_metric_returns_cached(self) -> None:
         gauge1 = get_or_create_gauge("energy", "Energy cost")
         gauge2 = get_or_create_gauge("energy", "Energy cost different")
-        assert gauge1 is gauge2
+        self.assertIs(gauge1, gauge2)

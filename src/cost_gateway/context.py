@@ -33,13 +33,7 @@ class Context:
         self.clock = clock
         simulator = CostSimulator(self.clock)
         for name, config in self.settings.cost.sources.items():
-            simulator.add_cost(
-                name=name,
-                min_cost=config.min_cost,
-                max_cost=config.max_cost,
-                peak_time=config.peak_time,
-                period=config.period,
-            )
+            simulator.add_cost(name=name, config=config)
         self.cost_service = CostService(simulator, self.settings.cost)
 
     def start(self) -> None:

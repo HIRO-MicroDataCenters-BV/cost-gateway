@@ -22,7 +22,7 @@ class CostService:
         self.settings = settings
         self.custom_costs = dict()
 
-    async def list(self) -> List[Cost]:
+    def list(self) -> List[Cost]:
         results = []
         for name, _ in self.settings.sources.items():
             try:
@@ -64,26 +64,26 @@ class CostService:
         gauge.labels(source=name).set(float(value))
         self.custom_costs[name] = value
 
-    async def remove_custom_cost(self, name: str) -> None:
+    def remove_custom_cost(self, name: str) -> None:
         if name in self.custom_costs:
             del self.custom_costs[name]
-            cost = await self.cost_source.get_cost(name)
+            cost = self.cost_source.get_cost(name)
             gauge = get_or_create_gauge(name, f"Cost for {name}")
             gauge.labels(source=name).set(cost)
 
     async def run_periodic_update(self, interval: int = 60) -> None:
         while True:
-            await self.update_metrics()
+            self.update_metrics()
             await asyncio.sleep(interval)
 
-    async def update_metrics(self) -> None:
+    def update_metrics(self) -> None:
         if not self.settings.enabled:
             return
 
         for name, _ in self.settings.sources.items():
             try:
                 if name not in self.custom_costs:
-                    cost = await self.cost_source.get_cost(name)
+                    cost = self.cost_source.get_cost(name)
                     gauge = get_or_create_gauge(name, f"Cost for {name}")
                     gauge.labels(source=name).set(cost)
             except ValueError as e:
